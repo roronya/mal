@@ -5,45 +5,50 @@
 (import [hy.models [HySymbol :as sym]])
 (import [env [Env]])
 
-(setv env (Env))
-(.set env "+" (fn [a b] (+ a b)))
-(.set env "-" (fn [a b] (- a b)))
-(.set env "*" (fn [a b] (* a b)))
-(.set env "/" (fn [a b] (int (/ a b))))
-(.set env "outer" None)
-
-(defn eval_ast [ast]
+(defn eval_ast [ast env]
   (if (= list (type ast)) (return (list-comp
-                                    (eval_ast e)
-                                    [e ast]))
+                                    (eval_ast element env)
+                                    [element ast]))
       (= dict (type ast)) (return (dict-comp
-                                    key (eval_ast value)
+                                    key (eval_ast value env)
                                     [[key value] (.items ast)])))
   (if-not (and (= tuple (type ast))
                (= sym (type (get ast 0))))
           (return ast))
-  (if (= "def!" (get ast 0)) (.set env (get ast 1) (get ast 2)))
-  ((.get env (get ast 0))
-    (eval_ast (get ast 1))
-    (eval_ast (get ast 2))))
+  (if (= (sym "def!") (get ast 0)) (do (.set env (get ast 1) (get ast 2))
+                                       (eval_ast (get ast 1) env))
+      (= (sym "let*") (get ast 0)) (do (setv new_env (Env))
+                                       (setv new_env.outer env)
+                                       (for [[key value] (chunked (get ast 1) 2)]
+                                         (.set new_env key (eval_ast value env)))
+                                       (eval_ast (get ast 2) new_env))
+      (do ((.get env (get ast 0))
+            (eval_ast (get ast 1) env)
+            (eval_ast (get ast 2) env)))))
 
 (defn READ [arg]
   (read_str arg))
 
-(defn EVAL [ast]
-  (eval_ast ast))
+(defn EVAL [ast env]
+  (eval_ast ast env))
 
 (defn PRINT [arg]
   (pr_str arg))
 
-(defn rep [arg]
-  (PRINT (EVAL (READ arg))))
+(defn rep [arg env]
+  (PRINT (EVAL (READ arg) env)))
 
 (defmain [&rest args]
+  (setv env (Env))
+  (.set env "+" (fn [a b] (+ a b)))
+  (.set env "-" (fn [a b] (- a b)))
+  (.set env "*" (fn [a b] (* a b)))
+  (.set env "/" (fn [a b] (int (/ a b))))
+  (.set env "outer" None)
   (while True
     (try
       (do
         (setv arg (input "user> "))
         (when (= "" arg) (continue))
-        (print (rep arg)))
+        (print (rep arg env)))
       (except [e EOFError] (break)))))
