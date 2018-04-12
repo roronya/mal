@@ -15,7 +15,7 @@
   (defn get [self key]
     (setv value (self.find key))
     (if (none? value)
-        (raise (ValueError "not found"))
+        (raise (ValueError (.format "'{0}' not found." key)))
         value)))
 
 (defmain [&rest args]
