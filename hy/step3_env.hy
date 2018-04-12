@@ -4,6 +4,7 @@
 (import [printer [pr_str]])
 (import [hy.models [HySymbol :as sym]])
 (import [env [Env]])
+(import [more_itertools [chunked]])
 
 (defn eval_ast [ast env]
   (if (= list (type ast)) (return (list-comp
@@ -11,20 +12,22 @@
                                     [element ast]))
       (= dict (type ast)) (return (dict-comp
                                     key (eval_ast value env)
-                                    [[key value] (.items ast)])))
-  (if-not (and (= tuple (type ast))
-               (= sym (type (get ast 0))))
-          (return ast))
-  (if (= (sym "def!") (get ast 0)) (do (.set env (get ast 1) (get ast 2))
-                                       (eval_ast (get ast 1) env))
-      (= (sym "let*") (get ast 0)) (do (setv new_env (Env))
-                                       (setv new_env.outer env)
-                                       (for [[key value] (chunked (get ast 1) 2)]
-                                         (.set new_env key (eval_ast value env)))
-                                       (eval_ast (get ast 2) new_env))
-      (do ((.get env (get ast 0))
-            (eval_ast (get ast 1) env)
-            (eval_ast (get ast 2) env)))))
+                                    [[key value] (.items ast)]))
+      (= tuple (type ast))
+      (do (setv head (get ast 0))
+          (if (= (sym "def!") head)
+              (do (.set env (get ast 1) (get ast 2)) (eval_ast (get ast 1) env))
+              (= (sym "let*") head)
+              (do (setv new_env (Env))
+                  (setv new_env.outer env)
+                  (for [[key value] (chunked (get ast 1) 2)]
+                    (.set new_env key (eval_ast value env)))
+                  (eval_ast (get ast 2) new_env))
+              ((.get env (get ast 0))
+                (eval_ast (get ast 1) env)
+                (eval_ast (get ast 2) env))))
+      (= sym (type ast)) (.get env ast)
+      ast))
 
 (defn READ [arg]
   (read_str arg))
@@ -51,4 +54,4 @@
         (setv arg (input "user> "))
         (when (= "" arg) (continue))
         (print (rep arg env)))
-      (except [e EOFError] (break)))))
+      (except [e Exception] (print e)))))
