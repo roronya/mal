@@ -1,8 +1,10 @@
 #! /usr/bin/env hy
 
 (defclass Env []
-  (defn __init__ [self]
-    (setv self.data {:outer None}))
+  (defn __init__ [self binds exprs]
+    (setv self.data {:outer None})
+    (for [[key value] (zip binds exprs)]
+      (assoc self.data key value)))
   (defn set [self key value]
     (assoc self.data key value))
   (defn find [self key]
@@ -19,7 +21,7 @@
         value)))
 
 (defmain [&rest args]
-  (setv e (Env))
+  (setv e (Env ["+"] [(fn [a b] a + b)]))
   (.set e "hoge" "hige")
   (.find e "hoge")
   (.find e "foo")
