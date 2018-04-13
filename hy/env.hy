@@ -11,7 +11,7 @@
            (setv outer (get self.data :outer))
            (if (none? outer)
                None
-               (.find outer)))))
+               (.find outer key)))))
   (defn get [self key]
     (setv value (self.find key))
     (if (none? value)
