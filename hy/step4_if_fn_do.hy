@@ -7,6 +7,7 @@
 (import [more_itertools [chunked]])
 
 (defn eval_ast [ast env]
+  (print ast)
   (if (= list (type ast)) (return (list-comp
                                     (eval_ast element env)
                                     [element ast]))
@@ -36,9 +37,13 @@
                       (eval_ast
                         (try (get ast 3) (except [e IndexError] None))
                         env)))
-              ((.get env (get ast 0))
-                (eval_ast (get ast 1) env)
-                (eval_ast (get ast 2) env))))
+              (= (sym "fn*") head)
+              (fn [&rest args]
+                (setv fn_env (Env (get ast 1) (or args [])))
+                (assoc fn_env.data :outer env)
+                (eval_ast (get ast 2) fn_env))
+              (do (setv l (list-comp (eval_ast element env) [element ast]))
+                  ((get l 0) #*(rest l)))))
       (= sym (type ast)) (.get env ast)
       ast))
 
