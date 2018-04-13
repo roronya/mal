@@ -1,6 +1,6 @@
 #! /usr/bin/env hy
 
-(import types)
+(import [types [FunctionType :as function]])
 (import [hy.models [HySymbol :as sym]])
 
 (defn pr_str [arg]
@@ -21,5 +21,5 @@
                           (.join " " (list-comp (pr_str node) [node arg])))
       (= tuple arg_type) (.format
                           "({0})"
-                          (.join " " (list-comp (pr_str node) [node arg])))))
-
+                          (.join " " (list-comp (pr_str node) [node arg])))
+      (= function arg_type) "#<function>"))
