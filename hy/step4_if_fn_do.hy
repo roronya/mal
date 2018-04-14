@@ -1,13 +1,14 @@
 #! /usr/bin/env hy
 
-(import [reader [read_str]])
-(import [printer [pr_str]])
-(import [hy.models [HySymbol :as sym]])
-(import [env [Env]])
-(import [more_itertools [chunked]])
+(import [reader [read_str]]
+        [printer [pr_str]]
+        [hy.models [HySymbol :as sym]]
+        [env [Env]]
+        [more_itertools [chunked]]
+        [core [ns]])
 
 (defn eval_ast [ast env]
-  (print ast)
+  ;;(print ast)
   (if (= list (type ast)) (return (list-comp
                                     (eval_ast element env)
                                     [element ast]))
@@ -32,11 +33,13 @@
                   (get evals -1))
               (= (sym "if") head)
               (do (setv condition (eval_ast (get ast 1) env))
-                  (if condition
-                      (eval_ast (get ast 2) env)
-                      (eval_ast
-                        (try (get ast 3) (except [e IndexError] None))
-                        env)))
+                  (setv element1 (eval_ast (nth ast 2) env))
+                  (setv element2 (eval_ast (nth ast 3) env))
+                  (setv element1_type (type element1))
+                  (setv element2_type (type element2))
+                  (if
+                    (if (or (= condition 0) (= condition (sym "")) (= condition ())) True)
+                    element1 element2))
               (= (sym "fn*") head)
               (fn [&rest args]
                 (setv fn_env (Env (get ast 1) (or args [])))
@@ -44,7 +47,9 @@
                 (eval_ast (get ast 2) fn_env))
               (do (setv l (list-comp (eval_ast element env) [element ast]))
                   ((get l 0) #*(rest l)))))
-      (= sym (type ast)) (.get env ast)
+      (= sym (type ast)) (if (and (= "\"" (get ast 0)) (= "\"" (get ast -1)))
+                             ast
+                             (.get env ast))
       ast))
 
 (defn READ [arg]
@@ -60,11 +65,7 @@
   (PRINT (EVAL (READ arg) env)))
 
 (defmain [&rest args]
-  (setv env (Env [] []))
-  (.set env "+" (fn [a b] (+ a b)))
-  (.set env "-" (fn [a b] (- a b)))
-  (.set env "*" (fn [a b] (* a b)))
-  (.set env "/" (fn [a b] (int (/ a b))))
+  (setv env (Env (ns.keys) (ns.values)))
   (.set env "outer" None)
   (while True
     (try
