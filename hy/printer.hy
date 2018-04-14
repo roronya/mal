@@ -7,7 +7,10 @@
   (setv arg_type (type arg))
   (if (= sym arg_type) (arg.format)
       (none? arg) "nil"
-      (= bool arg_type) (if arg "true" "false")
+      (= bool arg_type) (if (if (= arg 0) True
+                                (= arg []) True
+                                arg) 
+                            "true" "false")
       (= int arg_type) (str arg)
       (= dict arg_type) (.format "{{{0}}}"
                          (.join " "
