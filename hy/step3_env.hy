@@ -7,19 +7,21 @@
 (import [more_itertools [chunked]])
 
 (defn eval_ast [ast env]
-  (setv head (get ast 0))
+  (setv head (nth ast 0))
+  (setv arg0 (nth ast 1))
+  (setv arg1 (nth ast 2))
   (if (= (sym "def!") head)
-      (do (.set env (get ast 1) (EVAL (get ast 2) env))
-          (.get env (get ast 1)))
+      (do (.set env arg0 (EVAL arg1 env))
+          (.get env arg0))
       (= (sym "let*") head)
       (do (setv new_env (Env))
           (assoc new_env.data :outer env)
-          (for [[key value] (chunked (get ast 1) 2)]
+          (for [[key value] (chunked arg0 2)]
             (.set new_env key (EVAL value new_env)))
-          (EVAL (get ast 2) new_env))
-      ((EVAL (get ast 0) env)
-        (EVAL (get ast 1) env)
-        (EVAL (get ast 2) env))))
+          (EVAL arg1 new_env))
+      ((EVAL head env)
+        (EVAL arg0 env)
+        (EVAL arg1 env))))
 
 (defn READ [arg]
   (read_str arg))
