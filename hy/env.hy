@@ -1,8 +1,8 @@
 #! /usr/bin/env hy
 
 (defclass Env []
-  (defn __init__ [self binds exprs]
-    (setv self.data {:outer None})
+  (defn __init__ [self &optional [binds []] [exprs []] [outer None]]
+    (setv self.data {:outer outer})
     (for [[key value] (zip binds exprs)]
       (assoc self.data key value)))
   (defn set [self key value]

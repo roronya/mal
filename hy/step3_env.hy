@@ -7,34 +7,29 @@
 (import [more_itertools [chunked]])
 
 (defn eval_ast [ast env]
-  (if (= list (type ast)) (return (list-comp
-                                    (eval_ast element env)
-                                    [element ast]))
-      (= dict (type ast)) (return (dict-comp
-                                    key (eval_ast value env)
-                                    [[key value] (.items ast)]))
-      (= tuple (type ast))
-      (do (setv head (get ast 0))
-          (if (= (sym "def!") head)
-              (do (.set env (get ast 1) (eval_ast (get ast 2) env))
-                  (.get env (get ast 1)))
-              (= (sym "let*") head)
-              (do (setv new_env (Env))
-                  (assoc new_env.data :outer env)
-                  (for [[key value] (chunked (get ast 1) 2)]
-                    (.set new_env key (eval_ast value new_env)))
-                  (eval_ast (get ast 2) new_env))
-              ((.get env (get ast 0))
-                (eval_ast (get ast 1) env)
-                (eval_ast (get ast 2) env))))
-      (= sym (type ast)) (.get env ast)
-      ast))
+  (setv head (get ast 0))
+  (if (= (sym "def!") head)
+      (do (.set env (get ast 1) (EVAL (get ast 2) env))
+          (.get env (get ast 1)))
+      (= (sym "let*") head)
+      (do (setv new_env (Env))
+          (assoc new_env.data :outer env)
+          (for [[key value] (chunked (get ast 1) 2)]
+            (.set new_env key (EVAL value new_env)))
+          (EVAL (get ast 2) new_env))
+      ((EVAL (get ast 0) env)
+        (EVAL (get ast 1) env)
+        (EVAL (get ast 2) env))))
 
 (defn READ [arg]
   (read_str arg))
 
 (defn EVAL [ast env]
-  (eval_ast ast env))
+  (if (isinstance ast tuple) (eval_ast ast env)
+      (isinstance ast list) (list-comp (EVAL element env) [element ast])
+      (isinstance ast dict) (dict-comp key (EVAL value env) [[key value] (.items ast)])
+      (isinstance ast sym) (.get env ast)
+      ast))
 
 (defn PRINT [arg]
   (pr_str arg))
