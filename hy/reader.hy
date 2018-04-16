@@ -108,7 +108,8 @@
   (setv token (.next rdr))
   (if
     (re.match r"-?[0-9]+$" token) (int token)
+    (re.match r"\".*\"$" token) (str token)
     (= "nil" token) None
     (= "true" token) True
     (= "false" token) False
-    True (sym token)))
+    (sym token)))
