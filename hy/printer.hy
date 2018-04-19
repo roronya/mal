@@ -1,12 +1,13 @@
 #! /usr/bin/env hy
 
 (import [types [FunctionType :as function]])
-(import [hy.models [HySymbol :as sym]])
+(import [hy.models [HySymbol :as sym HyKeyword :as key]])
 
 (defn pr_str [arg]
   (setv arg_type (type arg))
   (if (= sym arg_type) (arg.format)
       (= str arg_type) arg
+      (= key arg_type) arg
       (none? arg) "nil"
       (= bool arg_type) (if arg "true" "false")
       (= int arg_type) (str arg)
