@@ -42,7 +42,11 @@
             (do (setv condition (EVAL a1 env))
                 (if
                   (if (instance? bool condition) condition
-                      (or (= condition 0) (= condition "") (= condition [])) True
+                      (or (= condition 0)
+                          (= condition "")
+                          (= condition (tuple))
+                          (= condition []))
+                      True
                       condition)
                   (EVAL a2 env)
                   (EVAL (nth ast 3) env)))

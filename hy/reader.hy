@@ -1,7 +1,7 @@
 #! /usr/bin/env hy
 
 (import re)
-(import [hy.models [HySymbol :as sym]])
+(import [hy.models [HySymbol :as sym HyKeyword :as key]])
 
 (defclass Reader []
   (defn __init__ [self tokens &optional [position 0]]
@@ -109,6 +109,7 @@
   (if
     (re.match r"-?[0-9]+$" token) (int token)
     (re.match r"\".*\"$" token) (str token)
+    (re.match r"^:.*" token) (key token)
     (= "nil" token) None
     (= "true" token) True
     (= "false" token) False
