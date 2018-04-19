@@ -6,7 +6,7 @@
           "/" (fn [a b] (int (/ a b)))
           "pr-str" (fn [a] (pr_str a))
           "list" (fn [&rest args] (list args))
-          "list?" (fn [a] (= list (type a)))
+          "list?" (fn [a] (instance? list a))
           "empty?" (fn [a] (empty? a))
           "count" (fn [a] (len (if (= list (type a)) a (return 0))))
           "=" (fn [a b] (= a b))

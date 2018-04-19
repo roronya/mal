@@ -34,17 +34,23 @@
                 (EVAL a2 new_env))
             (= (sym "do") a0)
             (do (setv evals
-                      (list-comp (eval_ast element env)
+                      (list-comp (EVAL element env)
                                  [element ast ]
                                  (!= element (sym "do"))))
                 (get evals -1))
             (= (sym "if") a0)
-            (if a1 a2 (nth ast 3))
+            (do (setv condition (EVAL a1 env))
+                (if
+                  (if (instance? bool condition) condition
+                      (or (= condition 0) (= condition "") (= condition [])) True
+                      condition)
+                  (EVAL a2 env)
+                  (EVAL (nth ast 3) env)))
             (= (sym "fn*") a0)
             (fn [&rest args]
               (setv fn_env (Env a1 (or args [])))
               (assoc fn_env.data :outer env)
-              (eval_ast a2 fn_env))
+              (EVAL a2 fn_env))
             (do
               (setv el (eval_ast ast env)
                     f (first el)
