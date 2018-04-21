@@ -8,7 +8,8 @@
           "list" (fn [&rest args] (tuple args))
           "list?" (fn [a] (instance? tuple a))
           "empty?" (fn [a] (empty? a))
-          "count" (fn [a] (len (if (= tuple (type a)) a (return 0))))
+          "count" (fn [a] (len (if (or (= list (type a)) (= tuple (type a)))
+                                   a (return 0))))
           "=" (fn [a b] (= a b))
           "<" (fn [a b] (< a b))
           "<=" (fn [a b] (<= a b))
@@ -17,6 +18,5 @@
           "str" (fn [&rest args]
                   (.join "" (list (map (fn [x] (str x)) args))))
           "prn" (fn [a] (print a))
-          "not" (fn [a] (not (if (instance? bool a) a (return False))))
           "println" (fn [a] (print a))
           })
