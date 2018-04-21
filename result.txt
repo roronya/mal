@@ -131,10 +131,18 @@ TEST: ( (fn* (a & more) (list? more)) 1) -> ['',true] -> FAIL (line 240):
     Expected : '( (fn* (a & more) (list? more)) 1)\r\ntrue'
     Got      : "( (fn* (a & more) (list? more)) 1)\r\n'more' not found."
 Testing language defined not function
-TEST: (not false) -> ['',true] -> SUCCESS
-TEST: (not true) -> ['',false] -> SUCCESS
-TEST: (not "a") -> ['',false] -> SUCCESS
-TEST: (not 0) -> ['',false] -> SUCCESS
+TEST: (not false) -> ['',true] -> FAIL (line 245):
+    Expected : '(not false)\r\ntrue'
+    Got      : "(not false)\r\n'not' not found."
+TEST: (not true) -> ['',false] -> FAIL (line 247):
+    Expected : '(not true)\r\nfalse'
+    Got      : "(not true)\r\n'not' not found."
+TEST: (not "a") -> ['',false] -> FAIL (line 249):
+    Expected : '(not "a")\r\nfalse'
+    Got      : '(not "a")\r\n\'not\' not found.'
+TEST: (not 0) -> ['',false] -> FAIL (line 251):
+    Expected : '(not 0)\r\nfalse'
+    Got      : "(not 0)\r\n'not' not found."
 -----------------------------------------------------
 Testing string quoting
 TEST: "" -> ['',""] -> SUCCESS
@@ -233,15 +241,9 @@ TEST: (println (list 1 2 "abc" "\"") "def") -> ['(1 2 abc ") def\r\n',nil] -> FA
 
 -------- Optional Functionality --------
 Testing keywords
-TEST: (= :abc :abc) -> ['',true] -> FAIL (line 413):
-    Expected : '(= :abc :abc)\r\ntrue'
-    Got      : "(= :abc :abc)\r\n':abc' not found."
-TEST: (= :abc :def) -> ['',false] -> FAIL (line 415):
-    Expected : '(= :abc :def)\r\nfalse'
-    Got      : "(= :abc :def)\r\n':abc' not found."
-TEST: (= :abc ":abc") -> ['',false] -> FAIL (line 417):
-    Expected : '(= :abc ":abc")\r\nfalse'
-    Got      : '(= :abc ":abc")\r\n\':abc\' not found.'
+TEST: (= :abc :abc) -> ['',true] -> SUCCESS
+TEST: (= :abc :def) -> ['',false] -> SUCCESS
+TEST: (= :abc ":abc") -> ['',false] -> SUCCESS
 Testing vector truthiness
 TEST: (if [] 7 8) -> ['',7] -> SUCCESS
 Testing vector printing
@@ -258,9 +260,7 @@ TEST: (str []) -> ['',"[]"] -> FAIL (line 434):
     Expected : '(str [])\r\n"[]"'
     Got      : '(str [])\r\n[]'
 Testing vector functions
-TEST: (count [1 2 3]) -> ['',3] -> FAIL (line 439):
-    Expected : '(count [1 2 3])\r\n3'
-    Got      : '(count [1 2 3])\r\n0'
+TEST: (count [1 2 3]) -> ['',3] -> SUCCESS
 TEST: (empty? [1 2 3]) -> ['',false] -> SUCCESS
 TEST: (empty? []) -> ['',true] -> SUCCESS
 TEST: (list? [4 5 6]) -> ['',false] -> SUCCESS
@@ -314,6 +314,18 @@ FAILED TEST (line 238): ( (fn* (a & more) (count more)) 1) -> ['',0]:
 FAILED TEST (line 240): ( (fn* (a & more) (list? more)) 1) -> ['',true]:
     Expected : '( (fn* (a & more) (list? more)) 1)\r\ntrue'
     Got      : "( (fn* (a & more) (list? more)) 1)\r\n'more' not found."
+FAILED TEST (line 245): (not false) -> ['',true]:
+    Expected : '(not false)\r\ntrue'
+    Got      : "(not false)\r\n'not' not found."
+FAILED TEST (line 247): (not true) -> ['',false]:
+    Expected : '(not true)\r\nfalse'
+    Got      : "(not true)\r\n'not' not found."
+FAILED TEST (line 249): (not "a") -> ['',false]:
+    Expected : '(not "a")\r\nfalse'
+    Got      : '(not "a")\r\n\'not\' not found.'
+FAILED TEST (line 251): (not 0) -> ['',false]:
+    Expected : '(not 0)\r\nfalse'
+    Got      : "(not 0)\r\n'not' not found."
 FAILED TEST (line 282): (pr-str) -> ['',""]:
     Expected : '(pr-str)\r\n""'
     Got      : '(pr-str)\r\n()'
@@ -383,15 +395,6 @@ FAILED TEST (line 401): (println "abc\\def\\ghi") -> ['abc\\def\\ghi\r\n',nil]:
 FAILED TEST (line 405): (println (list 1 2 "abc" "\"") "def") -> ['(1 2 abc ") def\r\n',nil]:
     Expected : '(println (list 1 2 "abc" "\\"") "def")\r\n(1 2 abc ") def\r\nnil'
     Got      : '(println (list 1 2 "abc" "\\"") "def")\r\n<lambda>() takes 1 positional argument but 2 were given'
-FAILED TEST (line 413): (= :abc :abc) -> ['',true]:
-    Expected : '(= :abc :abc)\r\ntrue'
-    Got      : "(= :abc :abc)\r\n':abc' not found."
-FAILED TEST (line 415): (= :abc :def) -> ['',false]:
-    Expected : '(= :abc :def)\r\nfalse'
-    Got      : "(= :abc :def)\r\n':abc' not found."
-FAILED TEST (line 417): (= :abc ":abc") -> ['',false]:
-    Expected : '(= :abc ":abc")\r\nfalse'
-    Got      : '(= :abc ":abc")\r\n\':abc\' not found.'
 FAILED TEST (line 425): (pr-str [1 2 "abc" "\""] "def") -> ['',"[1 2 \"abc\" \"\\\"\"] \"def\""]:
     Expected : '(pr-str [1 2 "abc" "\\""] "def")\r\n"[1 2 \\"abc\\" \\"\\\\\\"\\"] \\"def\\""'
     Got      : '(pr-str [1 2 "abc" "\\""] "def")\r\n([1 2 "abc" "\\""] "def")'
@@ -404,9 +407,6 @@ FAILED TEST (line 431): (str [1 2 "abc" "\""] "def") -> ['',"[1 2 abc \"]def"]:
 FAILED TEST (line 434): (str []) -> ['',"[]"]:
     Expected : '(str [])\r\n"[]"'
     Got      : '(str [])\r\n[]'
-FAILED TEST (line 439): (count [1 2 3]) -> ['',3]:
-    Expected : '(count [1 2 3])\r\n3'
-    Got      : '(count [1 2 3])\r\n0'
 FAILED TEST (line 449): (= [] (list)) -> ['',true]:
     Expected : '(= [] (list))\r\ntrue'
     Got      : '(= [] (list))\r\nfalse'

@@ -60,7 +60,6 @@
                     f (first el)
                     args (list (rest el)))
               (f #*args))))))
-
 (defn PRINT [arg]
   (pr_str arg))
 
@@ -77,3 +76,6 @@
         (print (rep arg env)))
       (except [e EOFError] (break))
       (except [e Exception] (print e)))))
+(defn read_keyword [rdr]
+  (.next rdr)
+  (key ))
