@@ -62,7 +62,7 @@
                 (setv el (eval_ast ast env)
                       f (first el)
                       args (list (rest el)))
-                (f #*args)))))))
+                (f #*args))))))))
 
 (defn PRINT [arg]
   (pr_str arg))
