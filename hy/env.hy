@@ -19,12 +19,3 @@
     (if (none? value)
         (raise (ValueError (.format "'{0}' not found." key)))
         value)))
-
-(defmain [&rest args]
-  (setv e (Env ["+"] [(fn [a b] a + b)]))
-  (.set e "hoge" "hige")
-  (.find e "hoge")
-  (.find e "foo")
-  (.get e "hoge")
-  (.get e "foo")
-  )
