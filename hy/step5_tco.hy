@@ -4,7 +4,8 @@
         [hy.models [HySymbol :as sym]]
         [env [Env]]
         [more_itertools [chunked]]
-        [core [ns]])
+        [core [ns]]
+        [sys])
 
 (defn eval_ast [ast env]
   (if (instance? tuple ast) (tuple (map (fn [el] (EVAL el env)) ast))
@@ -82,6 +83,7 @@
   (PRINT (EVAL (READ arg) env)))
 
 (defmain [&rest args]
+  (sys.setrecursionlimit 100000)
   (setv env (Env (ns.keys) (ns.values)))
   (while True
     (try
