@@ -19,7 +19,6 @@
 (defn EVAL [ast env]
   (setv res None)
   (while True
-    (print ast)
     (setv res
           (if (not (instance? tuple ast))
               (eval_ast ast env)
@@ -27,9 +26,9 @@
                 (setv [a0 a1 a2] [(nth ast 0) (nth ast 1) (nth ast 2)])
                 (if (= (sym "def!") a0)
                     (do (.set env a1 (EVAL a2 env))
-                        (print env.data)
-                        (print a1)
-                        (print (.get env a1))
+                        ;;(print env.data)
+                        ;;(print a1)
+                        ;;(print (.get env a1))
                         (.get env a1))
 
                     (= (sym "let*") a0)
