@@ -1,4 +1,5 @@
-(import [printer [pr_str]])
+(import [printer [pr_str]]
+        [reader [read_str]])
 
 (setv ns {"+" (fn [a b] (+ a b))
           "-" (fn [a b] (- a b))
@@ -19,4 +20,5 @@
                   (.join "" (list (map (fn [x] (str x)) args))))
           "prn" (fn [a] (print a))
           "println" (fn [a] (print a))
+          "read-string" (fn [a] (read_str a))
           })
