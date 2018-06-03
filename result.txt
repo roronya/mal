@@ -1,428 +1,3020 @@
-/Library/Developer/CommandLineTools/usr/bin/make -C hy step4_if_fn_do.hy
-make[1]: Nothing to be done for `step4_if_fn_do.hy'.
+/Library/Developer/CommandLineTools/usr/bin/make -C hy step5_tco.hy
+make[1]: Nothing to be done for `step5_tco.hy'.
 ----------------------------------------------
-Testing test^hy^step4; step file: hy/step4_if_fn_do.hy, test file: tests/step4_if_fn_do.mal
-Running: env STEP=step4_if_fn_do MAL_IMPL=js ../runtest.py --deferrable --optional   ../tests/step4_if_fn_do.mal -- ../hy/run
------------------------------------------------------
-Testing list functions
-TEST: (list) -> ['',()] -> SUCCESS
-TEST: (list? (list)) -> ['',true] -> SUCCESS
-TEST: (empty? (list)) -> ['',true] -> SUCCESS
-TEST: (empty? (list 1)) -> ['',false] -> SUCCESS
-TEST: (list 1 2 3) -> ['',(1 2 3)] -> SUCCESS
-TEST: (count (list 1 2 3)) -> ['',3] -> SUCCESS
-TEST: (count (list)) -> ['',0] -> SUCCESS
-TEST: (count nil) -> ['',0] -> SUCCESS
-TEST: (if (> (count (list 1 2 3)) 3) "yes" "no") -> ['',"no"] -> SUCCESS
-TEST: (if (>= (count (list 1 2 3)) 3) "yes" "no") -> ['',"yes"] -> SUCCESS
-Testing if form
-TEST: (if true 7 8) -> ['',7] -> SUCCESS
-TEST: (if false 7 8) -> ['',8] -> SUCCESS
-TEST: (if true (+ 1 7) (+ 1 8)) -> ['',8] -> SUCCESS
-TEST: (if false (+ 1 7) (+ 1 8)) -> ['',9] -> SUCCESS
-TEST: (if nil 7 8) -> ['',8] -> SUCCESS
-TEST: (if 0 7 8) -> ['',7] -> SUCCESS
-TEST: (if "" 7 8) -> ['',7] -> SUCCESS
-TEST: (if (list) 7 8) -> ['',7] -> SUCCESS
-TEST: (if (list 1 2 3) 7 8) -> ['',7] -> SUCCESS
-TEST: (= (list) nil) -> ['',false] -> SUCCESS
-Testing 1-way if form
-TEST: (if false (+ 1 7)) -> ['',nil] -> SUCCESS
-TEST: (if nil 8 7) -> ['',7] -> SUCCESS
-TEST: (if true (+ 1 7)) -> ['',8] -> SUCCESS
-Testing basic conditionals
-TEST: (= 2 1) -> ['',false] -> SUCCESS
-TEST: (= 1 1) -> ['',true] -> SUCCESS
-TEST: (= 1 2) -> ['',false] -> SUCCESS
-TEST: (= 1 (+ 1 1)) -> ['',false] -> SUCCESS
-TEST: (= 2 (+ 1 1)) -> ['',true] -> SUCCESS
-TEST: (= nil 1) -> ['',false] -> SUCCESS
-TEST: (= nil nil) -> ['',true] -> SUCCESS
-TEST: (> 2 1) -> ['',true] -> SUCCESS
-TEST: (> 1 1) -> ['',false] -> SUCCESS
-TEST: (> 1 2) -> ['',false] -> SUCCESS
-TEST: (>= 2 1) -> ['',true] -> SUCCESS
-TEST: (>= 1 1) -> ['',true] -> SUCCESS
-TEST: (>= 1 2) -> ['',false] -> SUCCESS
-TEST: (< 2 1) -> ['',false] -> SUCCESS
-TEST: (< 1 1) -> ['',false] -> SUCCESS
-TEST: (< 1 2) -> ['',true] -> SUCCESS
-TEST: (<= 2 1) -> ['',false] -> SUCCESS
-TEST: (<= 1 1) -> ['',true] -> SUCCESS
-TEST: (<= 1 2) -> ['',true] -> SUCCESS
-Testing equality
-TEST: (= 1 1) -> ['',true] -> SUCCESS
-TEST: (= 0 0) -> ['',true] -> SUCCESS
-TEST: (= 1 0) -> ['',false] -> SUCCESS
-TEST: (= "" "") -> ['',true] -> SUCCESS
-TEST: (= "abc" "abc") -> ['',true] -> SUCCESS
-TEST: (= "abc" "") -> ['',false] -> SUCCESS
-TEST: (= "" "abc") -> ['',false] -> SUCCESS
-TEST: (= "abc" "def") -> ['',false] -> SUCCESS
-TEST: (= "abc" "ABC") -> ['',false] -> SUCCESS
-TEST: (= true true) -> ['',true] -> SUCCESS
-TEST: (= false false) -> ['',true] -> SUCCESS
-TEST: (= nil nil) -> ['',true] -> SUCCESS
-TEST: (= (list) (list)) -> ['',true] -> SUCCESS
-TEST: (= (list 1 2) (list 1 2)) -> ['',true] -> SUCCESS
-TEST: (= (list 1) (list)) -> ['',false] -> SUCCESS
-TEST: (= (list) (list 1)) -> ['',false] -> SUCCESS
-TEST: (= 0 (list)) -> ['',false] -> SUCCESS
-TEST: (= (list) 0) -> ['',false] -> SUCCESS
-TEST: (= (list) "") -> ['',false] -> SUCCESS
-TEST: (= "" (list)) -> ['',false] -> SUCCESS
-Testing builtin and user defined functions
-TEST: (+ 1 2) -> ['',3] -> SUCCESS
-TEST: ( (fn* (a b) (+ b a)) 3 4) -> ['',7] -> SUCCESS
-TEST: ( (fn* () 4) ) -> ['',4] -> SUCCESS
-TEST: ( (fn* (f x) (f x)) (fn* (a) (+ 1 a)) 7) -> ['',8] -> SUCCESS
-Testing closures
-TEST: ( ( (fn* (a) (fn* (b) (+ a b))) 5) 7) -> ['',12] -> SUCCESS
-TEST: (def! gen-plus5 (fn* () (fn* (b) (+ 5 b)))) -> ['',*] -> SUCCESS
-TEST: (def! plus5 (gen-plus5)) -> ['',*] -> SUCCESS
-TEST: (plus5 7) -> ['',12] -> SUCCESS
-TEST: (def! gen-plusX (fn* (x) (fn* (b) (+ x b)))) -> ['',*] -> SUCCESS
-TEST: (def! plus7 (gen-plusX 7)) -> ['',*] -> SUCCESS
-TEST: (plus7 8) -> ['',15] -> SUCCESS
-Testing do form
-TEST: (do (prn "prn output1")) -> ['"prn output1"\r\n',nil] -> SUCCESS
-TEST: (do (prn "prn output2") 7) -> ['"prn output2"\r\n',7] -> SUCCESS
-TEST: (do (prn "prn output1") (prn "prn output2") (+ 1 2)) -> ['"prn output1"\r\n"prn output2"\r\n',3] -> SUCCESS
-TEST: (do (def! a 6) 7 (+ a 8)) -> ['',14] -> SUCCESS
-TEST: a -> ['',6] -> SUCCESS
-Testing special form case-sensitivity
-TEST: (def! DO (fn* (a) 7)) -> ['',*] -> SUCCESS
-TEST: (DO 3) -> ['',7] -> SUCCESS
-Testing recursive sumdown function
-TEST: (def! sumdown (fn* (N) (if (> N 0) (+ N (sumdown  (- N 1))) 0))) -> ['',*] -> SUCCESS
-TEST: (sumdown 1) -> ['',1] -> SUCCESS
-TEST: (sumdown 2) -> ['',3] -> SUCCESS
-TEST: (sumdown 6) -> ['',21] -> SUCCESS
-Testing recursive fibonacci function
-TEST: (def! fib (fn* (N) (if (= N 0) 1 (if (= N 1) 1 (+ (fib (- N 1)) (fib (- N 2))))))) -> ['',*] -> SUCCESS
-TEST: (fib 1) -> ['',1] -> SUCCESS
-TEST: (fib 2) -> ['',2] -> SUCCESS
-TEST: (fib 4) -> ['',5] -> SUCCESS
-
--------- Deferrable Functionality --------
-Testing variable length arguments
-TEST: ( (fn* (& more) (count more)) 1 2 3) -> ['',3] -> FAIL (line 226):
-    Expected : '( (fn* (& more) (count more)) 1 2 3)\r\n3'
-    Got      : '( (fn* (& more) (count more)) 1 2 3)\r\n0'
-TEST: ( (fn* (& more) (list? more)) 1 2 3) -> ['',true] -> FAIL (line 228):
-    Expected : '( (fn* (& more) (list? more)) 1 2 3)\r\ntrue'
-    Got      : '( (fn* (& more) (list? more)) 1 2 3)\r\nfalse'
-TEST: ( (fn* (& more) (count more)) 1) -> ['',1] -> FAIL (line 230):
-    Expected : '( (fn* (& more) (count more)) 1)\r\n1'
-    Got      : "( (fn* (& more) (count more)) 1)\r\n'more' not found."
-TEST: ( (fn* (& more) (count more)) ) -> ['',0] -> FAIL (line 232):
-    Expected : '( (fn* (& more) (count more)) )\r\n0'
-    Got      : "( (fn* (& more) (count more)) )\r\n'more' not found."
-TEST: ( (fn* (& more) (list? more)) ) -> ['',true] -> FAIL (line 234):
-    Expected : '( (fn* (& more) (list? more)) )\r\ntrue'
-    Got      : "( (fn* (& more) (list? more)) )\r\n'more' not found."
-TEST: ( (fn* (a & more) (count more)) 1 2 3) -> ['',2] -> FAIL (line 236):
-    Expected : '( (fn* (a & more) (count more)) 1 2 3)\r\n2'
-    Got      : '( (fn* (a & more) (count more)) 1 2 3)\r\n0'
-TEST: ( (fn* (a & more) (count more)) 1) -> ['',0] -> FAIL (line 238):
-    Expected : '( (fn* (a & more) (count more)) 1)\r\n0'
-    Got      : "( (fn* (a & more) (count more)) 1)\r\n'more' not found."
-TEST: ( (fn* (a & more) (list? more)) 1) -> ['',true] -> FAIL (line 240):
-    Expected : '( (fn* (a & more) (list? more)) 1)\r\ntrue'
-    Got      : "( (fn* (a & more) (list? more)) 1)\r\n'more' not found."
-Testing language defined not function
-TEST: (not false) -> ['',true] -> FAIL (line 245):
-    Expected : '(not false)\r\ntrue'
-    Got      : "(not false)\r\n'not' not found."
-TEST: (not true) -> ['',false] -> FAIL (line 247):
-    Expected : '(not true)\r\nfalse'
-    Got      : "(not true)\r\n'not' not found."
-TEST: (not "a") -> ['',false] -> FAIL (line 249):
-    Expected : '(not "a")\r\nfalse'
-    Got      : '(not "a")\r\n\'not\' not found.'
-TEST: (not 0) -> ['',false] -> FAIL (line 251):
-    Expected : '(not 0)\r\nfalse'
-    Got      : "(not 0)\r\n'not' not found."
------------------------------------------------------
-Testing string quoting
-TEST: "" -> ['',""] -> SUCCESS
-TEST: "abc" -> ['',"abc"] -> SUCCESS
-TEST: "abc  def" -> ['',"abc  def"] -> SUCCESS
-TEST: "\"" -> ['',"\""] -> SUCCESS
-TEST: "abc\ndef\nghi" -> ['',"abc\ndef\nghi"] -> SUCCESS
-TEST: "abc\\def\\ghi" -> ['',"abc\\def\\ghi"] -> SUCCESS
-TEST: "\\n" -> ['',"\\n"] -> SUCCESS
-Testing pr-str
-TEST: (pr-str) -> ['',""] -> FAIL (line 282):
-    Expected : '(pr-str)\r\n""'
-    Got      : '(pr-str)\r\n()'
-TEST: (pr-str "") -> ['',"\"\""] -> FAIL (line 285):
-    Expected : '(pr-str "")\r\n"\\"\\""'
-    Got      : '(pr-str "")\r\n("")'
-TEST: (pr-str "abc") -> ['',"\"abc\""] -> FAIL (line 288):
-    Expected : '(pr-str "abc")\r\n"\\"abc\\""'
-    Got      : '(pr-str "abc")\r\n("abc")'
-TEST: (pr-str "abc  def" "ghi jkl") -> ['',"\"abc  def\" \"ghi jkl\""] -> FAIL (line 291):
-    Expected : '(pr-str "abc  def" "ghi jkl")\r\n"\\"abc  def\\" \\"ghi jkl\\""'
-    Got      : '(pr-str "abc  def" "ghi jkl")\r\n("abc  def" "ghi jkl")'
-TEST: (pr-str "\"") -> ['',"\"\\\"\""] -> FAIL (line 294):
-    Expected : '(pr-str "\\"")\r\n"\\"\\\\\\"\\""'
-    Got      : '(pr-str "\\"")\r\n("\\"")'
-TEST: (pr-str (list 1 2 "abc" "\"") "def") -> ['',"(1 2 \"abc\" \"\\\"\") \"def\""] -> FAIL (line 297):
-    Expected : '(pr-str (list 1 2 "abc" "\\"") "def")\r\n"(1 2 \\"abc\\" \\"\\\\\\"\\") \\"def\\""'
-    Got      : '(pr-str (list 1 2 "abc" "\\"") "def")\r\n((1 2 "abc" "\\"") "def")'
-TEST: (pr-str "abc\ndef\nghi") -> ['',"\"abc\\ndef\\nghi\""] -> FAIL (line 300):
-    Expected : '(pr-str "abc\\ndef\\nghi")\r\n"\\"abc\\\\ndef\\\\nghi\\""'
-    Got      : '(pr-str "abc\\ndef\\nghi")\r\n("abc\\ndef\\nghi")'
-TEST: (pr-str "abc\\def\\ghi") -> ['',"\"abc\\\\def\\\\ghi\""] -> FAIL (line 303):
-    Expected : '(pr-str "abc\\\\def\\\\ghi")\r\n"\\"abc\\\\\\\\def\\\\\\\\ghi\\""'
-    Got      : '(pr-str "abc\\\\def\\\\ghi")\r\n("abc\\\\def\\\\ghi")'
-TEST: (pr-str (list)) -> ['',"()"] -> FAIL (line 306):
-    Expected : '(pr-str (list))\r\n"()"'
-    Got      : '(pr-str (list))\r\n(())'
-Testing str
-TEST: (str) -> ['',""] -> FAIL (line 311):
-    Expected : '(str)\r\n""'
-    Got      : '(str)\r\n'
-TEST: (str "") -> ['',""] -> SUCCESS
-TEST: (str "abc") -> ['',"abc"] -> SUCCESS
-TEST: (str "\"") -> ['',"\""] -> SUCCESS
-TEST: (str 1 "abc" 3) -> ['',"1abc3"] -> FAIL (line 323):
-    Expected : '(str 1 "abc" 3)\r\n"1abc3"'
-    Got      : '(str 1 "abc" 3)\r\n1"abc"3'
-TEST: (str "abc  def" "ghi jkl") -> ['',"abc  defghi jkl"] -> FAIL (line 326):
-    Expected : '(str "abc  def" "ghi jkl")\r\n"abc  defghi jkl"'
-    Got      : '(str "abc  def" "ghi jkl")\r\n"abc  def""ghi jkl"'
-TEST: (str "abc\ndef\nghi") -> ['',"abc\ndef\nghi"] -> SUCCESS
-TEST: (str "abc\\def\\ghi") -> ['',"abc\\def\\ghi"] -> SUCCESS
-TEST: (str (list 1 2 "abc" "\"") "def") -> ['',"(1 2 abc \")def"] -> FAIL (line 335):
-    Expected : '(str (list 1 2 "abc" "\\"") "def")\r\n"(1 2 abc \\")def"'
-    Got      : '(str (list 1 2 "abc" "\\"") "def")\r\n(1, 2, \'"abc"\', \'"\\\\""\')"def"'
-TEST: (str (list)) -> ['',"()"] -> FAIL (line 338):
-    Expected : '(str (list))\r\n"()"'
-    Got      : '(str (list))\r\n()'
-Testing prn
-TEST: (prn) -> ['\r\n',nil] -> FAIL (line 343):
-    Expected : '(prn)\r\n\r\nnil'
-    Got      : "(prn)\r\n<lambda>() missing 1 required positional argument: 'a'"
-TEST: (prn "") -> ['""\r\n',nil] -> SUCCESS
-TEST: (prn "abc") -> ['"abc"\r\n',nil] -> SUCCESS
-TEST: (prn "abc  def" "ghi jkl") -> ['"abc  def" "ghi jkl"\r\n',*] -> SUCCESS
-TEST: (prn "\"") -> ['"\\""\r\n',nil] -> SUCCESS
-TEST: (prn "abc\ndef\nghi") -> ['"abc\\ndef\\nghi"\r\n',nil] -> SUCCESS
-TEST: (prn "abc\\def\\ghi") -> ['"abc\\\\def\\\\ghi"\r\n',*] -> SUCCESS
-TEST: nil -> ['',*] -> SUCCESS
-TEST: (prn (list 1 2 "abc" "\"") "def") -> ['(1 2 "abc" "\\"") "def"\r\n',nil] -> FAIL (line 370):
-    Expected : '(prn (list 1 2 "abc" "\\"") "def")\r\n(1 2 "abc" "\\"") "def"\r\nnil'
-    Got      : '(prn (list 1 2 "abc" "\\"") "def")\r\n<lambda>() takes 1 positional argument but 2 were given'
-Testing println
-TEST: (println) -> ['\r\n',nil] -> FAIL (line 376):
-    Expected : '(println)\r\n\r\nnil'
-    Got      : "(println)\r\n<lambda>() missing 1 required positional argument: 'a'"
-TEST: (println "") -> ['\r\n',nil] -> FAIL (line 380):
-    Expected : '(println "")\r\n\r\nnil'
-    Got      : '(println "")\r\n""\r\nnil'
-TEST: (println "abc") -> ['abc\r\n',nil] -> FAIL (line 384):
-    Expected : '(println "abc")\r\nabc\r\nnil'
-    Got      : '(println "abc")\r\n"abc"\r\nnil'
-TEST: (println "abc  def" "ghi jkl") -> ['abc  def ghi jkl\r\n',*] -> SUCCESS
-TEST: (println "\"") -> ['"\r\n',nil] -> FAIL (line 391):
-    Expected : '(println "\\"")\r\n"\r\nnil'
-    Got      : '(println "\\"")\r\n"\\""\r\nnil'
-TEST: (println "abc\ndef\nghi") -> ['abc\r\ndef\r\nghi\r\n',nil] -> FAIL (line 397):
-    Expected : '(println "abc\\ndef\\nghi")\r\nabc\r\ndef\r\nghi\r\nnil'
-    Got      : '(println "abc\\ndef\\nghi")\r\n"abc\\ndef\\nghi"\r\nnil'
-TEST: (println "abc\\def\\ghi") -> ['abc\\def\\ghi\r\n',nil] -> FAIL (line 401):
-    Expected : '(println "abc\\\\def\\\\ghi")\r\nabc\\def\\ghi\r\nnil'
-    Got      : '(println "abc\\\\def\\\\ghi")\r\n"abc\\\\def\\\\ghi"\r\nnil'
-TEST: (println (list 1 2 "abc" "\"") "def") -> ['(1 2 abc ") def\r\n',nil] -> FAIL (line 405):
-    Expected : '(println (list 1 2 "abc" "\\"") "def")\r\n(1 2 abc ") def\r\nnil'
-    Got      : '(println (list 1 2 "abc" "\\"") "def")\r\n<lambda>() takes 1 positional argument but 2 were given'
-
--------- Optional Functionality --------
-Testing keywords
-TEST: (= :abc :abc) -> ['',true] -> SUCCESS
-TEST: (= :abc :def) -> ['',false] -> SUCCESS
-TEST: (= :abc ":abc") -> ['',false] -> SUCCESS
-Testing vector truthiness
-TEST: (if [] 7 8) -> ['',7] -> SUCCESS
-Testing vector printing
-TEST: (pr-str [1 2 "abc" "\""] "def") -> ['',"[1 2 \"abc\" \"\\\"\"] \"def\""] -> FAIL (line 425):
-    Expected : '(pr-str [1 2 "abc" "\\""] "def")\r\n"[1 2 \\"abc\\" \\"\\\\\\"\\"] \\"def\\""'
-    Got      : '(pr-str [1 2 "abc" "\\""] "def")\r\n([1 2 "abc" "\\""] "def")'
-TEST: (pr-str []) -> ['',"[]"] -> FAIL (line 428):
-    Expected : '(pr-str [])\r\n"[]"'
-    Got      : '(pr-str [])\r\n([])'
-TEST: (str [1 2 "abc" "\""] "def") -> ['',"[1 2 abc \"]def"] -> FAIL (line 431):
-    Expected : '(str [1 2 "abc" "\\""] "def")\r\n"[1 2 abc \\"]def"'
-    Got      : '(str [1 2 "abc" "\\""] "def")\r\n[1, 2, \'"abc"\', \'"\\\\""\']"def"'
-TEST: (str []) -> ['',"[]"] -> FAIL (line 434):
-    Expected : '(str [])\r\n"[]"'
-    Got      : '(str [])\r\n[]'
-Testing vector functions
-TEST: (count [1 2 3]) -> ['',3] -> SUCCESS
-TEST: (empty? [1 2 3]) -> ['',false] -> SUCCESS
-TEST: (empty? []) -> ['',true] -> SUCCESS
-TEST: (list? [4 5 6]) -> ['',false] -> SUCCESS
-Testing vector equality
-TEST: (= [] (list)) -> ['',true] -> FAIL (line 449):
-    Expected : '(= [] (list))\r\ntrue'
-    Got      : '(= [] (list))\r\nfalse'
-TEST: (= [7 8] [7 8]) -> ['',true] -> SUCCESS
-TEST: (= (list 1 2) [1 2]) -> ['',true] -> FAIL (line 453):
-    Expected : '(= (list 1 2) [1 2])\r\ntrue'
-    Got      : '(= (list 1 2) [1 2])\r\nfalse'
-TEST: (= (list 1) []) -> ['',false] -> SUCCESS
-TEST: (= [] [1]) -> ['',false] -> SUCCESS
-TEST: (= 0 []) -> ['',false] -> SUCCESS
-TEST: (= [] 0) -> ['',false] -> SUCCESS
-TEST: (= [] "") -> ['',false] -> SUCCESS
-TEST: (= "" []) -> ['',false] -> SUCCESS
-Testing vector parameter lists
-TEST: ( (fn* [] 4) ) -> ['',4] -> SUCCESS
-TEST: ( (fn* [f x] (f x)) (fn* [a] (+ 1 a)) 7) -> ['',8] -> SUCCESS
-Nested vector/list equality
-TEST: (= [(list)] (list [])) -> ['',true] -> FAIL (line 475):
-    Expected : '(= [(list)] (list []))\r\ntrue'
-    Got      : '(= [(list)] (list []))\r\nfalse'
-TEST: (= [1 2 (list 3 4 [5 6])] (list 1 2 [3 4 (list 5 6)])) -> ['',true] -> FAIL (line 477):
-    Expected : '(= [1 2 (list 3 4 [5 6])] (list 1 2 [3 4 (list 5 6)]))\r\ntrue'
-    Got      : '(= [1 2 (list 3 4 [5 6])] (list 1 2 [3 4 (list 5 6)]))\r\nfalse'
-
-FAILURES:
-FAILED TEST (line 226): ( (fn* (& more) (count more)) 1 2 3) -> ['',3]:
-    Expected : '( (fn* (& more) (count more)) 1 2 3)\r\n3'
-    Got      : '( (fn* (& more) (count more)) 1 2 3)\r\n0'
-FAILED TEST (line 228): ( (fn* (& more) (list? more)) 1 2 3) -> ['',true]:
-    Expected : '( (fn* (& more) (list? more)) 1 2 3)\r\ntrue'
-    Got      : '( (fn* (& more) (list? more)) 1 2 3)\r\nfalse'
-FAILED TEST (line 230): ( (fn* (& more) (count more)) 1) -> ['',1]:
-    Expected : '( (fn* (& more) (count more)) 1)\r\n1'
-    Got      : "( (fn* (& more) (count more)) 1)\r\n'more' not found."
-FAILED TEST (line 232): ( (fn* (& more) (count more)) ) -> ['',0]:
-    Expected : '( (fn* (& more) (count more)) )\r\n0'
-    Got      : "( (fn* (& more) (count more)) )\r\n'more' not found."
-FAILED TEST (line 234): ( (fn* (& more) (list? more)) ) -> ['',true]:
-    Expected : '( (fn* (& more) (list? more)) )\r\ntrue'
-    Got      : "( (fn* (& more) (list? more)) )\r\n'more' not found."
-FAILED TEST (line 236): ( (fn* (a & more) (count more)) 1 2 3) -> ['',2]:
-    Expected : '( (fn* (a & more) (count more)) 1 2 3)\r\n2'
-    Got      : '( (fn* (a & more) (count more)) 1 2 3)\r\n0'
-FAILED TEST (line 238): ( (fn* (a & more) (count more)) 1) -> ['',0]:
-    Expected : '( (fn* (a & more) (count more)) 1)\r\n0'
-    Got      : "( (fn* (a & more) (count more)) 1)\r\n'more' not found."
-FAILED TEST (line 240): ( (fn* (a & more) (list? more)) 1) -> ['',true]:
-    Expected : '( (fn* (a & more) (list? more)) 1)\r\ntrue'
-    Got      : "( (fn* (a & more) (list? more)) 1)\r\n'more' not found."
-FAILED TEST (line 245): (not false) -> ['',true]:
-    Expected : '(not false)\r\ntrue'
-    Got      : "(not false)\r\n'not' not found."
-FAILED TEST (line 247): (not true) -> ['',false]:
-    Expected : '(not true)\r\nfalse'
-    Got      : "(not true)\r\n'not' not found."
-FAILED TEST (line 249): (not "a") -> ['',false]:
-    Expected : '(not "a")\r\nfalse'
-    Got      : '(not "a")\r\n\'not\' not found.'
-FAILED TEST (line 251): (not 0) -> ['',false]:
-    Expected : '(not 0)\r\nfalse'
-    Got      : "(not 0)\r\n'not' not found."
-FAILED TEST (line 282): (pr-str) -> ['',""]:
-    Expected : '(pr-str)\r\n""'
-    Got      : '(pr-str)\r\n()'
-FAILED TEST (line 285): (pr-str "") -> ['',"\"\""]:
-    Expected : '(pr-str "")\r\n"\\"\\""'
-    Got      : '(pr-str "")\r\n("")'
-FAILED TEST (line 288): (pr-str "abc") -> ['',"\"abc\""]:
-    Expected : '(pr-str "abc")\r\n"\\"abc\\""'
-    Got      : '(pr-str "abc")\r\n("abc")'
-FAILED TEST (line 291): (pr-str "abc  def" "ghi jkl") -> ['',"\"abc  def\" \"ghi jkl\""]:
-    Expected : '(pr-str "abc  def" "ghi jkl")\r\n"\\"abc  def\\" \\"ghi jkl\\""'
-    Got      : '(pr-str "abc  def" "ghi jkl")\r\n("abc  def" "ghi jkl")'
-FAILED TEST (line 294): (pr-str "\"") -> ['',"\"\\\"\""]:
-    Expected : '(pr-str "\\"")\r\n"\\"\\\\\\"\\""'
-    Got      : '(pr-str "\\"")\r\n("\\"")'
-FAILED TEST (line 297): (pr-str (list 1 2 "abc" "\"") "def") -> ['',"(1 2 \"abc\" \"\\\"\") \"def\""]:
-    Expected : '(pr-str (list 1 2 "abc" "\\"") "def")\r\n"(1 2 \\"abc\\" \\"\\\\\\"\\") \\"def\\""'
-    Got      : '(pr-str (list 1 2 "abc" "\\"") "def")\r\n((1 2 "abc" "\\"") "def")'
-FAILED TEST (line 300): (pr-str "abc\ndef\nghi") -> ['',"\"abc\\ndef\\nghi\""]:
-    Expected : '(pr-str "abc\\ndef\\nghi")\r\n"\\"abc\\\\ndef\\\\nghi\\""'
-    Got      : '(pr-str "abc\\ndef\\nghi")\r\n("abc\\ndef\\nghi")'
-FAILED TEST (line 303): (pr-str "abc\\def\\ghi") -> ['',"\"abc\\\\def\\\\ghi\""]:
-    Expected : '(pr-str "abc\\\\def\\\\ghi")\r\n"\\"abc\\\\\\\\def\\\\\\\\ghi\\""'
-    Got      : '(pr-str "abc\\\\def\\\\ghi")\r\n("abc\\\\def\\\\ghi")'
-FAILED TEST (line 306): (pr-str (list)) -> ['',"()"]:
-    Expected : '(pr-str (list))\r\n"()"'
-    Got      : '(pr-str (list))\r\n(())'
-FAILED TEST (line 311): (str) -> ['',""]:
-    Expected : '(str)\r\n""'
-    Got      : '(str)\r\n'
-FAILED TEST (line 323): (str 1 "abc" 3) -> ['',"1abc3"]:
-    Expected : '(str 1 "abc" 3)\r\n"1abc3"'
-    Got      : '(str 1 "abc" 3)\r\n1"abc"3'
-FAILED TEST (line 326): (str "abc  def" "ghi jkl") -> ['',"abc  defghi jkl"]:
-    Expected : '(str "abc  def" "ghi jkl")\r\n"abc  defghi jkl"'
-    Got      : '(str "abc  def" "ghi jkl")\r\n"abc  def""ghi jkl"'
-FAILED TEST (line 335): (str (list 1 2 "abc" "\"") "def") -> ['',"(1 2 abc \")def"]:
-    Expected : '(str (list 1 2 "abc" "\\"") "def")\r\n"(1 2 abc \\")def"'
-    Got      : '(str (list 1 2 "abc" "\\"") "def")\r\n(1, 2, \'"abc"\', \'"\\\\""\')"def"'
-FAILED TEST (line 338): (str (list)) -> ['',"()"]:
-    Expected : '(str (list))\r\n"()"'
-    Got      : '(str (list))\r\n()'
-FAILED TEST (line 343): (prn) -> ['\r\n',nil]:
-    Expected : '(prn)\r\n\r\nnil'
-    Got      : "(prn)\r\n<lambda>() missing 1 required positional argument: 'a'"
-FAILED TEST (line 370): (prn (list 1 2 "abc" "\"") "def") -> ['(1 2 "abc" "\\"") "def"\r\n',nil]:
-    Expected : '(prn (list 1 2 "abc" "\\"") "def")\r\n(1 2 "abc" "\\"") "def"\r\nnil'
-    Got      : '(prn (list 1 2 "abc" "\\"") "def")\r\n<lambda>() takes 1 positional argument but 2 were given'
-FAILED TEST (line 376): (println) -> ['\r\n',nil]:
-    Expected : '(println)\r\n\r\nnil'
-    Got      : "(println)\r\n<lambda>() missing 1 required positional argument: 'a'"
-FAILED TEST (line 380): (println "") -> ['\r\n',nil]:
-    Expected : '(println "")\r\n\r\nnil'
-    Got      : '(println "")\r\n""\r\nnil'
-FAILED TEST (line 384): (println "abc") -> ['abc\r\n',nil]:
-    Expected : '(println "abc")\r\nabc\r\nnil'
-    Got      : '(println "abc")\r\n"abc"\r\nnil'
-FAILED TEST (line 391): (println "\"") -> ['"\r\n',nil]:
-    Expected : '(println "\\"")\r\n"\r\nnil'
-    Got      : '(println "\\"")\r\n"\\""\r\nnil'
-FAILED TEST (line 397): (println "abc\ndef\nghi") -> ['abc\r\ndef\r\nghi\r\n',nil]:
-    Expected : '(println "abc\\ndef\\nghi")\r\nabc\r\ndef\r\nghi\r\nnil'
-    Got      : '(println "abc\\ndef\\nghi")\r\n"abc\\ndef\\nghi"\r\nnil'
-FAILED TEST (line 401): (println "abc\\def\\ghi") -> ['abc\\def\\ghi\r\n',nil]:
-    Expected : '(println "abc\\\\def\\\\ghi")\r\nabc\\def\\ghi\r\nnil'
-    Got      : '(println "abc\\\\def\\\\ghi")\r\n"abc\\\\def\\\\ghi"\r\nnil'
-FAILED TEST (line 405): (println (list 1 2 "abc" "\"") "def") -> ['(1 2 abc ") def\r\n',nil]:
-    Expected : '(println (list 1 2 "abc" "\\"") "def")\r\n(1 2 abc ") def\r\nnil'
-    Got      : '(println (list 1 2 "abc" "\\"") "def")\r\n<lambda>() takes 1 positional argument but 2 were given'
-FAILED TEST (line 425): (pr-str [1 2 "abc" "\""] "def") -> ['',"[1 2 \"abc\" \"\\\"\"] \"def\""]:
-    Expected : '(pr-str [1 2 "abc" "\\""] "def")\r\n"[1 2 \\"abc\\" \\"\\\\\\"\\"] \\"def\\""'
-    Got      : '(pr-str [1 2 "abc" "\\""] "def")\r\n([1 2 "abc" "\\""] "def")'
-FAILED TEST (line 428): (pr-str []) -> ['',"[]"]:
-    Expected : '(pr-str [])\r\n"[]"'
-    Got      : '(pr-str [])\r\n([])'
-FAILED TEST (line 431): (str [1 2 "abc" "\""] "def") -> ['',"[1 2 abc \"]def"]:
-    Expected : '(str [1 2 "abc" "\\""] "def")\r\n"[1 2 abc \\"]def"'
-    Got      : '(str [1 2 "abc" "\\""] "def")\r\n[1, 2, \'"abc"\', \'"\\\\""\']"def"'
-FAILED TEST (line 434): (str []) -> ['',"[]"]:
-    Expected : '(str [])\r\n"[]"'
-    Got      : '(str [])\r\n[]'
-FAILED TEST (line 449): (= [] (list)) -> ['',true]:
-    Expected : '(= [] (list))\r\ntrue'
-    Got      : '(= [] (list))\r\nfalse'
-FAILED TEST (line 453): (= (list 1 2) [1 2]) -> ['',true]:
-    Expected : '(= (list 1 2) [1 2])\r\ntrue'
-    Got      : '(= (list 1 2) [1 2])\r\nfalse'
-FAILED TEST (line 475): (= [(list)] (list [])) -> ['',true]:
-    Expected : '(= [(list)] (list []))\r\ntrue'
-    Got      : '(= [(list)] (list []))\r\nfalse'
-FAILED TEST (line 477): (= [1 2 (list 3 4 [5 6])] (list 1 2 [3 4 (list 5 6)])) -> ['',true]:
-    Expected : '(= [1 2 (list 3 4 [5 6])] (list 1 2 [3 4 (list 5 6)]))\r\ntrue'
-    Got      : '(= [1 2 (list 3 4 [5 6])] (list 1 2 [3 4 (list 5 6)]))\r\nfalse'
-
-TEST RESULTS (for ../tests/step4_if_fn_do.mal):
-    0: soft failing tests
-   43: failing tests
-  125: passing tests
-  168: total tests
-
+Testing test^hy^step5; step file: hy/step5_tco.hy, test file: tests/step5_tco.mal
+Running: env STEP=step5_tco MAL_IMPL=js ../runtest.py --deferrable --optional   ../tests/step5_tco.mal -- ../hy/run
+Testing recursive tail-call function
+TEST: (def! sum2 (fn* (n acc) (if (= n 0) acc (sum2 (- n 1) (+ n acc))))) -> ['',*] -> SUCCESS
+TODO: test let*, and do for TCO
+TEST: (sum2 10 0) -> ['',55] -> FAIL (line 8):
+    Expected : '(sum2 10 0)\r\n55'
+    Got      : "(sum2 10 0)\r\n(HySymbol('sum2'), 10, 0)\r\nsum2\r\n10\r\n0\r\n(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))\r\n(HySymbol('='), HySymbol('n'), 0)\r\n=\r\nn\r\n0\r\n(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))\r\nsum2\r\n(HySymbol('-'), HySymbol('n'), 1)\r\n-\r\nn\r\n1\r\n(HySymbol('+'), HySymbol('n'), HySymbol('acc'))\r\n+\r\nn\r\nacc\r\n(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))\r\n(HySymbol('='), HySymbol('n'), 0)\r\n=\r\nn\r\n0\r\n(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))\r\nsum2\r\n(HySymbol('-'), HySymbol('n'), 1)\r\n-\r\nn\r\n1\r\n(HySymbol('+'), HySymbol('n'), HySymbol('acc'))\r\n+\r\nn\r\nacc\r\n(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))\r\n(HySymbol('='), HySymbol('n'), 0)\r\n=\r\nn\r\n0\r\n(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))\r\nsum2\r\n(HySymbol('-'), HySymbol('n'), 1)\r\n-\r\nn\r\n1\r\n(HySymbol('+'), HySymbol('n'), HySymbol('acc'))\r\n+\r\nn\r\nacc\r\n(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))\r\n(HySymbol('='), HySymbol('n'), 0)\r\n=\r\nn\r\n0\r\n(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))\r\nsum2\r\n(HySymbol('-'), HySymbol('n'), 1)\r\n-\r\nn\r\n1\r\n(HySymbol('+'), HySymbol('n'), HySymbol('acc'))\r\n+\r\nn\r\nacc\r\n(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))\r\n(HySymbol('='), HySymbol('n'), 0)\r\n=\r\nn\r\n0\r\n(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))\r\nsum2\r\n(HySymbol('-'), HySymbol('n'), 1)\r\n-\r\nn\r\n1\r\n(HySymbol('+'), HySymbol('n'), HySymbol('acc'))\r\n+\r\nn\r\nacc\r\n(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))\r\n(HySymbol('='), HySymbol('n'), 0)\r\n=\r\nn\r\n0\r\n(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))\r\nsum2\r\n(HySymbol('-'), HySymbol('n'), 1)\r\n-\r\nn\r\n1\r\n(HySymbol('+'), HySymbol('n'), HySymbol('acc'))\r\n+\r\nn\r\nacc\r\n(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))\r\n(HySymbol('='), HySymbol('n'), 0)\r\n=\r\nn\r\n0\r\n(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))\r\nsum2\r\n(HySymbol('-'), HySymbol('n'), 1)\r\n-\r\nn\r\n1\r\n(HySymbol('+'), HySymbol('n'), HySymbol('acc'))\r\n+\r\nn\r\nacc\r\n(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))\r\n(HySymbol('='), HySymbol('n'), 0)\r\n=\r\nn\r\n0\r\n(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))\r\nsum2\r\n(HySymbol('-'), HySymbol('n'), 1)\r\n-\r\nn\r\n1\r\n(HySymbol('+'), HySymbol('n'), HySymbol('acc'))\r\n+\r\nn\r\nacc\r\n(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))\r\n(HySymbol('='), HySymbol('n'), 0)\r\n=\r\nn\r\n0\r\n(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))\r\nsum2\r\n(HySymbol('-'), HySymbol('n'), 1)\r\n-\r\nn\r\n1\r\n(HySymbol('+'), HySymbol('n'), HySymbol('acc'))\r\n+\r\nn\r\nacc\r\n(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))\r\n(HySymbol('='), HySymbol('n'), 0)\r\n=\r\nn\r\n0\r\n(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))\r\nsum2\r\n(HySymbol('-'), HySymbol('n'), 1)\r\n-\r\nn\r\n1\r\n(HySymbol('+'), HySymbol('n'), HySymbol('acc'))\r\n+\r\nn\r\nacc\r\n(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))\r\n(HySymbol('='), HySymbol('n'), 0)\r\n=\r\nn\r\n0\r\nacc\r\n55"
+TEST: (def! res2 nil) -> ['',nil] -> FAIL (line 11):
+    Expected : '(def! res2 nil)\r\nnil'
+    Got      : "(def! res2 nil)\r\n(HySymbol('def!'), HySymbol('res2'), None)\r\nNone\r\n'res2' not found."
+TEST: (def! res2 (sum2 10000 0)) -> ['',*]
+Exception: KeyboardInterrupt()
+Output before exception:
+(def! res2 (sum2 10000 0))
+(HySymbol('def!'), HySymbol('res2'), (HySymbol('sum2'), 10000, 0))
+(HySymbol('sum2'), 10000, 0)
+sum2
+10000
+0
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), HySymbol('n'), HySymbol('acc'))
++
+n
+acc
+(HySymbol('if'), (HySymbol('='), HySymbol('n'), 0), HySymbol('acc'), (HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc'))))
+(HySymbol('='), HySymbol('n'), 0)
+=
+n
+0
+(HySymbol('sum2'), (HySymbol('-'), HySymbol('n'), 1), (HySymbol('+'), HySymbol('n'), HySymbol('acc')))
+sum2
+(HySymbol('-'), HySymbol('n'), 1)
+-
+n
+1
+(HySymbol('+'), Hy
