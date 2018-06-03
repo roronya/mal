@@ -1,26 +1,21 @@
-require_relative "mal_readline"
+require "readline"
 
-# read
 def READ(str)
-    return str
+  return str
 end
 
-# eval
 def EVAL(ast, env)
-    return ast
+  return ast
 end
 
-# print
 def PRINT(exp)
-    return exp
+  return exp
 end
 
-# repl
 def REP(str)
-    return PRINT(EVAL(READ(str), {}))
+  return PRINT(EVAL(READ(str), {}))
 end
 
-# repl loop
-while line = _readline("user> ")
-    puts REP(line)
+while line = Readline.readline('user> ')
+   puts REP(line)
 end
