@@ -1,7 +1,4 @@
 require_relative 'types'
-require 'logger'
-$logger = Logger.new(STDOUT)
-$logger.level = Logger::INFO
 
 class Reader
   def initialize(tokens)
@@ -34,46 +31,46 @@ def read_str(str)
 end
 
 def read_form(rdr)
-  case rdr.peek
-    when '(' then
-      read_list(rdr, List)
-    when ')' then
-      raise 'unexpected \')\''
-    when '[' then
-      read_list(rdr, Vector,start='[', last=']')
-    when ']' then
-      raise 'unexpected \']\''
-    when '{' then
-      Hash[read_list(rdr, List, start='{', last='}').each_slice(2).to_a]
-    when '}'  then
-      raise 'unexpected \'}\''
-    when '\'' then
-      rdr.next
-      List.new [:quote, read_form(rdr)]
-    when '`' then
-      rdr.next
-      List.new [:quasiquote, read_form(rdr)]
-    when '~' then
-      rdr.next
-      List.new [:unquote, read_form(rdr)]
-    when '~@' then
-      rdr.next
-      List.new [:'splice-unquote', read_form(rdr)]
-    when '^' then
-      rdr.next
-      a = read_form(rdr)
-      b = read_form(rdr)
-      List.new [:'with-meta', b, a]
-    when '@' then
-      rdr.next
-      a = read_form(rdr)
-      List.new [:deref, a]
-    else
-      atom = read_atom(rdr)
-      $logger.debug("read_form:atom #=> #{atom}")
-      $logger.debug("read_form:atom.class #=> #{atom.class}")
-      return atom
-  end
+  return case rdr.peek
+           when '(' then
+             read_list(rdr, List)
+           when ')' then
+             raise 'unexpected \')\''
+           when '[' then
+             read_list(rdr, Vector, start='[', last=']')
+           when ']' then
+             raise 'unexpected \']\''
+           when '{' then
+             Hash[read_list(rdr, List, start='{', last='}').each_slice(2).to_a]
+           when '}' then
+             raise 'unexpected \'}\''
+           when '\'' then
+             rdr.next
+             List.new [:quote, read_form(rdr)]
+           when '`' then
+             rdr.next
+             List.new [:quasiquote, read_form(rdr)]
+           when '~' then
+             rdr.next
+             List.new [:unquote, read_form(rdr)]
+           when '~@' then
+             rdr.next
+             List.new [:'splice-unquote', read_form(rdr)]
+           when '^' then
+             rdr.next
+             a = read_form(rdr)
+             b = read_form(rdr)
+             List.new [:'with-meta', b, a]
+           when '@' then
+             rdr.next
+             a = read_form(rdr)
+             List.new [:deref, a]
+           else
+             atom = read_atom(rdr)
+             $logger.debug("read_form:atom #=> #{atom}")
+             $logger.debug("read_form:atom.class #=> #{atom.class}")
+             atom
+         end
 end
 
 def read_list(rdr, type, start='(', last=')')
@@ -95,9 +92,10 @@ end
 def read_atom(rdr)
   token = rdr.next
   $logger.debug("read_atom:token #=> #{token}")
-  if i = /^-?\d+$/.match(token)
-    i[0].to_i
-  else
-    token.to_sym
+  case token
+    when /^-?\d+$/ then
+      token.to_i
+    else
+      token.to_sym
   end
 end
