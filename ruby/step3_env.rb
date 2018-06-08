@@ -4,13 +4,13 @@ require_relative 'reader'
 require_relative 'env'
 require 'logger'
 $logger = Logger.new(STDOUT)
-#$logger.level = Logger::INFO
+$logger.level = Logger::INFO
 
 $repl_env = Env.new
-$repl_env.set(:+, ->(a,b){a+b})
-$repl_env.set(:-, ->(a,b){a-b})
-$repl_env.set(:*, ->(a,b){a*b})
-$repl_env.set(:/, ->(a,b){a/b})
+$repl_env.set(:+, ->(a, b) {a+b})
+$repl_env.set(:-, ->(a, b) {a-b})
+$repl_env.set(:*, ->(a, b) {a*b})
+$repl_env.set(:/, ->(a, b) {a/b})
 $logger.debug("$repl_env.data #=> #{$repl_env.data}")
 
 def READ(str)
@@ -23,8 +23,25 @@ def EVAL(ast, env)
     return eval_ast(ast, env)
   end
   return ast if ast.empty?
-  ast = eval_ast(ast, env)
-  ast[0][*ast.drop(1)]
+  case ast[0]
+    when :def!
+      if ast.size != 3
+        raise 'expected ast with size 3'
+      end
+      env.set(ast[1], EVAL(ast[2], env))
+    when :'let*'
+      if ast.size != 3
+        raise 'expected ast with size 3'
+      end
+      let_env = Env.new env
+      ast[1].each_slice(2).each do |key, value|
+        let_env.set(key, EVAL(value, let_env))
+      end
+      EVAL(ast[2], let_env)
+    else
+      ast = eval_ast(ast, env)
+      ast[0][*ast.drop(1)]
+  end
 end
 
 def PRINT(exp)
@@ -46,7 +63,7 @@ def eval_ast(ast, env)
            when Vector
              Vector.new ast.map {|e| EVAL(e, env)}
            when Hash
-             ast.to_a.map{|k,v| [k, EVAL(v, env)]}.to_h
+             ast.to_a.map {|k, v| [k, EVAL(v, env)]}.to_h
            else
              ast
          end
