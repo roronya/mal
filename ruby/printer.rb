@@ -1,8 +1,8 @@
 def pr_str(ast)
   case ast
-    when Symbol then
+    when Symbol
       ast.to_s
-    when Integer then
+    when Integer
       ast.to_s
     when NilClass
       'nil'
@@ -10,11 +10,11 @@ def pr_str(ast)
       ast.to_s
     when FalseClass
       ast.to_s
-    when List then
+    when List
       "(#{ast.map {|e| pr_str(e)}.join(' ')})"
-    when Vector then
+    when Vector
       "[#{ast.map {|e| pr_str(e)}.join(' ')}]"
-    when Hash then
+    when Hash
       "{#{ast.to_a.flatten.map {|e| pr_str(e)}.join(' ')}}"
   end
 end
