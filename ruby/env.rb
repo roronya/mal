@@ -1,8 +1,8 @@
 class Env
   attr_accessor :data
-  def initialize(outer=nil, data={})
+  def initialize(outer=nil, binds=[], exprs=[])
     @outer = outer
-    @data = data
+    @data = [binds, exprs].transpose.to_h
   end
 
   def set(key, value)
