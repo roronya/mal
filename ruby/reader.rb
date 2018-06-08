@@ -95,6 +95,12 @@ def read_atom(rdr)
   case token
     when /^-?\d+$/ then
       token.to_i
+    when 'nil' then
+      nil
+    when 'true' then
+      true
+    when 'false' then
+      false
     else
       token.to_sym
   end

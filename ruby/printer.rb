@@ -4,6 +4,12 @@ def pr_str(ast)
       ast.to_s
     when Integer then
       ast.to_s
+    when NilClass
+      'nil'
+    when TrueClass
+      ast.to_s
+    when FalseClass
+      ast.to_s
     when List then
       "(#{ast.map {|e| pr_str(e)}.join(' ')})"
     when Vector then
