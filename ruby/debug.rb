@@ -1,4 +1,5 @@
 require_relative 'reader'
+require_relative 'printer'
 
 regex = /[\s,]*(~@|[\[\]{}()'`~^@]|"(?:\\.|[^\\"])*"|;.*|[^\s\[\]{}()'"`,;]*)/
 m = regex.match('~@hoge') # ~@
@@ -25,3 +26,5 @@ p tokenizer('( 123 456 789 )').reject {|token| token.empty?}
 
 p tokenizer '(1 2 3)'
 p read_str '(1 2 3)'
+
+p pr_str read_str '(1 2 3)'

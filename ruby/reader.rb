@@ -1,3 +1,8 @@
+require_relative 'types'
+require 'logger'
+$logger = Logger.new(STDOUT)
+$logger.level = Logger::INFO
+
 class Reader
   def initialize(tokens)
     @tokens = tokens
@@ -21,28 +26,65 @@ end
 
 def read_str(str)
   tokens = tokenizer(str)
+  $logger.debug("read_str:tokens #=> #{tokens}")
   rdr = Reader.new(tokens)
-  read_form(rdr)
+  ast = read_form(rdr)
+  $logger.debug("read_str:ast #=> #{ast}")
+  return ast
 end
 
 def read_form(rdr)
   case rdr.peek
     when '(' then
-      read_list(rdr)
+      read_list(rdr, List)
+    when ')' then
+      raise 'unexpected \')\''
+    when '[' then
+      read_list(rdr, Vector,start='[', last=']')
+    when ']' then
+      raise 'unexpected \']\''
+    when '{' then
+      Hash[read_list(rdr, List, start='{', last='}').each_slice(2).to_a]
+    when '}'  then
+      raise 'unexpected \'}\''
+    when '\'' then
+      rdr.next
+      List.new [:quote, read_form(rdr)]
+    when '`' then
+      rdr.next
+      List.new [:quasiquote, read_form(rdr)]
+    when '~' then
+      rdr.next
+      List.new [:unquote, read_form(rdr)]
+    when '~@' then
+      rdr.next
+      List.new [:'splice-unquote', read_form(rdr)]
+    when '^' then
+      rdr.next
+      a = read_form(rdr)
+      b = read_form(rdr)
+      List.new [:'with-meta', b, a]
+    when '@' then
+      rdr.next
+      a = read_form(rdr)
+      List.new [:deref, a]
     else
-      read_atom(rdr)
+      atom = read_atom(rdr)
+      $logger.debug("read_form:atom #=> #{atom}")
+      $logger.debug("read_form:atom.class #=> #{atom.class}")
+      return atom
   end
 end
 
-def read_list(rdr)
-  ast = []
+def read_list(rdr, type, start='(', last=')')
+  ast = type.new
   token = rdr.next
-  if token != '('
-    raise "expected '(', got #{token}"
+  if token != start
+    raise "expected '#{last}', got #{token}"
   end
-  while (token = rdr.peek) != ')'
+  while (token = rdr.peek) != last
     if token == ''
-      raise "expected ')', got #{token}"
+      raise "expected '#{last}', got #{token}"
     end
     ast.push(read_form(rdr))
   end
@@ -52,9 +94,10 @@ end
 
 def read_atom(rdr)
   token = rdr.next
-  if i = /\d+/.match(token)
+  $logger.debug("read_atom:token #=> #{token}")
+  if i = /^-?\d+$/.match(token)
     i[0].to_i
   else
-    token.to_s
+    token.to_sym
   end
 end

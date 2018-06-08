@@ -1,7 +1,11 @@
-require "readline"
+require 'readline'
+require_relative 'printer'
+require_relative 'reader'
 
 def READ(str)
-  return str
+  return read_str(str)
+rescue => e
+  puts e
 end
 
 def EVAL(ast, env)
@@ -9,7 +13,7 @@ def EVAL(ast, env)
 end
 
 def PRINT(exp)
-  return exp
+  return pr_str(exp)
 end
 
 def REP(str)
@@ -17,5 +21,5 @@ def REP(str)
 end
 
 while line = Readline.readline('user> ')
-   puts REP(line)
+  puts REP(line)
 end
