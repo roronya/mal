@@ -79,13 +79,25 @@ def PRINT(exp)
 end
 
 repl_env = Env.new
-$core_ns.each {|k, v| repl_env.set(k, v)}
 REP = ->(str) {PRINT(EVAL(READ(str), repl_env))}
-REP['(def! not (fn* (a) (if a false true)))']
+RE = ->(str) {EVAL(READ(str), repl_env)}
+
+$core_ns.each {|k, v| repl_env.set(k, v)}
+repl_env.set(:eval, ->(ast){EVAL(ast, repl_env)})
+repl_env.set(:'*ARGV*', List.new(ARGV.slice(1, ARGV.size) || []))
+
+RE['(def! not (fn* (a) (if a false true)))']
+RE['(def! load-file (fn* (f) (eval (read-string (str "(do " (slurp f) ")")))))']
 $logger.debug("$repl_env.data #=> #{repl_env.data}")
+
+if ARGV.size > 0
+  RE["(load-file \"#{ARGV[0]}\")"]
+  exit 0
+end
 
 while line = Readline.readline('user> ')
   begin
+    next if line == ''
     puts REP[line]
   rescue => e
     puts e

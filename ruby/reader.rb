@@ -18,11 +18,12 @@ end
 
 def tokenizer(str)
   regex = /[\s,]*(~@|[\[\]{}()'`~^@]|"(?:\\.|[^\\"])*"|;.*|[^\s\[\]{}()'"`,;]*)/
-  str.split(regex).reject {|token| token.empty?}.push('')
+  str.split(regex).reject {|token| token.empty? || token[0] == ';'}.push('')
 end
 
 def read_str(str)
   tokens = tokenizer(str)
+  return nil if tokens.size == 1
   $logger.debug("read_str:tokens #=> #{tokens}")
   rdr = Reader.new(tokens)
   ast = read_form(rdr)

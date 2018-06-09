@@ -24,6 +24,8 @@ def pr_str(ast, print_readbly=true)
       "{#{ast.to_a.flatten.map {|e| pr_str(e, print_readbly)}.join(' ')}}"
     when Proc
       '#<function>'
+    when Atom
+      "(atom #{ast.val})"
   end
 end
 
