@@ -51,8 +51,10 @@ def EVAL(ast, env)
 end
 
 def eval_ast(ast, env)
+  $logger.debug("eval_ast:ast.class #=> #{ast.class}")
   return case ast
            when Symbol
+             $logger.debug("eval_ast:env.get(ast) #=> #{env.get(ast)}")
              env.get(ast)
            when List
              List.new ast.map {|e| EVAL(e, env)}
@@ -71,7 +73,7 @@ end
 
 repl_env = Env.new
 $core_ns.each{|k,v| repl_env.set(k,v)}
-REP = ->(str) {EVAL(READ(str), repl_env)}
+REP = ->(str) {PRINT(EVAL(READ(str), repl_env))}
 $logger.debug("$repl_env.data #=> #{repl_env.data}")
 
 while line = Readline.readline('user> ')
