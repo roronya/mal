@@ -4,6 +4,8 @@ def pr_str(ast)
       ast.to_s
     when Integer
       ast.to_s
+    when String
+      ast
     when NilClass
       'nil'
     when TrueClass
