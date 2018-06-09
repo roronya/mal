@@ -22,7 +22,7 @@ def pr_str(ast, print_readbly=true)
       "[#{ast.map {|e| pr_str(e, print_readbly)}.join(' ')}]"
     when Hash
       "{#{ast.to_a.flatten.map {|e| pr_str(e, print_readbly)}.join(' ')}}"
-    when Proc
+    when Function
       '#<function>'
   end
 end
