@@ -80,10 +80,8 @@ end
 
 repl_env = Env.new
 $core_ns.each {|k, v| repl_env.set(k, v)}
-repl_env.set(:eval, ->(ast){EVAL(ast, repl_env)})
 REP = ->(str) {PRINT(EVAL(READ(str), repl_env))}
 REP['(def! not (fn* (a) (if a false true)))']
-REP['(def! load-file (fn* (f) (eval (read-string (str "(do " (slurp f) ")")))))']
 $logger.debug("$repl_env.data #=> #{repl_env.data}")
 
 while line = Readline.readline('user> ')
