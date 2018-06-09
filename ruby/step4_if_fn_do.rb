@@ -23,35 +23,37 @@ def EVAL(ast, env)
     return eval_ast(ast, env)
   end
   return ast if ast.empty?
-  case ast[0]
+  a0, a1, a2, a3 = ast
+  case a0
     when :def!
-      if ast.size != 3
-        raise 'expected ast with size 3'
-      end
-      env.set(ast[1], EVAL(ast[2], env))
+      env.set(a1, EVAL(a2, env))
     when :'let*'
-      if ast.size != 3
-        raise 'expected ast with size 3'
-      end
       let_env = Env.new env
-      ast[1].each_slice(2).each do |key, value|
+      a1.each_slice(2).each do |key, value|
         let_env.set(key, EVAL(value, let_env))
       end
-      EVAL(ast[2], let_env)
+      EVAL(a2, let_env)
+    when :do
+      return eval_ast(ast.drop(1), env).last
+    when :if
+      if EVAL(a1, env)
+        return EVAL(a2, env)
+      else
+        if a3
+          return EVAL(a3, env)
+        end
+        return nil
+      end
+    when :'fn*'
+      # (fn* [a] (print a)) #=> ->(a){print a}
+      # ((fn* [a] (print a)) "hoge") #=> ->(a){print a}["hoge"]
+      # ↑のように呼ばれたときにEVALする関数を作るイメージ
+      # このタイミングではEVALは走らない。呼び出されたときにEVALする関数を作る。
+      return ->(*args) {EVAL(a2, Env.new(env, a1, List.new(args)))}
     else
       ast = eval_ast(ast, env)
       ast[0][*ast.drop(1)]
   end
-end
-
-def PRINT(exp)
-  return pr_str(exp)
-end
-
-def REP(str)
-  return PRINT(EVAL(READ(str), $repl_env))
-rescue => e
-  puts e
 end
 
 def eval_ast(ast, env)
@@ -67,6 +69,17 @@ def eval_ast(ast, env)
            else
              ast
          end
+end
+
+
+def PRINT(exp)
+  return pr_str(exp)
+end
+
+def REP(str)
+  return PRINT(EVAL(READ(str), $repl_env))
+rescue => e
+  puts e
 end
 
 while line = Readline.readline('user> ')

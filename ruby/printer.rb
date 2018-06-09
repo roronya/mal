@@ -16,6 +16,8 @@ def pr_str(ast)
       "[#{ast.map {|e| pr_str(e)}.join(' ')}]"
     when Hash
       "{#{ast.to_a.flatten.map {|e| pr_str(e)}.join(' ')}}"
+    when Proc
+      '#<function>'
   end
 end
 
