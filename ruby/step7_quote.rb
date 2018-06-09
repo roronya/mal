@@ -7,6 +7,22 @@ require 'logger'
 $logger = Logger.new(STDOUT)
 $logger.level = Logger::INFO
 
+def pair?(list)
+  return List === list && list.size > 0
+end
+
+def quasiquote(ast)
+  if not pair?(ast)
+    return List.new [:quote, ast]
+  elsif ast[0] == :unquote
+    return ast[1]
+  elsif pair?(ast[0]) && ast[0][0] == :'splice-unquote'
+    return List.new [:concat, ast[0][1], quasiquote(ast.drop(1))]
+  else
+    return List.new [:cons, quasiquote(ast[0]), quasiquote(ast.drop(1))]
+  end
+end
+
 def READ(str)
   return read_str(str)
 end
@@ -44,8 +60,17 @@ def EVAL(ast, env)
         return Function.new a2, a1, env do |*args|
           EVAL(a2, Env.new(env, a1, List.new(args)))
         end
+      when :quote
+        return a1
+      when :quasiquote
+        # (def! a (quote (+ 1 2)))
+        # (quosiquote (+ 1 2 (unquote a))) #=> (+ 1 2 3)
+        # quosiquoteの中ではunquoteが使えて、unquoteの引数に渡されたquoteされた部分はEVALされて、
+        # quosiquote自信の引数はもう一度quoteされるっぽい。
+        ast = quasiquote(a1)
       else
         el = eval_ast(ast, env)
+        $logger.debug("EVAL:el #=> #{el}")
         f = el[0]
         if Function === f
           ast = f.ast
@@ -83,7 +108,7 @@ REP = ->(str) {PRINT(EVAL(READ(str), repl_env))}
 RE = ->(str) {EVAL(READ(str), repl_env)}
 
 $core_ns.each {|k, v| repl_env.set(k, v)}
-repl_env.set(:eval, ->(ast){EVAL(ast, repl_env)})
+repl_env.set(:eval, ->(ast) {EVAL(ast, repl_env)})
 repl_env.set(:'*ARGV*', List.new(ARGV.slice(1, ARGV.size) || []))
 
 RE['(def! not (fn* (a) (if a false true)))']
