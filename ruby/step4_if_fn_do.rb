@@ -2,16 +2,10 @@ require 'readline'
 require_relative 'printer'
 require_relative 'reader'
 require_relative 'env'
+require_relative 'core'
 require 'logger'
 $logger = Logger.new(STDOUT)
 $logger.level = Logger::INFO
-
-$repl_env = Env.new
-$repl_env.set(:+, ->(a, b) {a+b})
-$repl_env.set(:-, ->(a, b) {a-b})
-$repl_env.set(:*, ->(a, b) {a*b})
-$repl_env.set(:/, ->(a, b) {a/b})
-$logger.debug("$repl_env.data #=> #{$repl_env.data}")
 
 def READ(str)
   return read_str(str)
@@ -71,18 +65,20 @@ def eval_ast(ast, env)
          end
 end
 
-
 def PRINT(exp)
   return pr_str(exp)
 end
 
-def REP(str)
-  return PRINT(EVAL(READ(str), $repl_env))
-rescue => e
-  puts e
-end
+repl_env = Env.new
+$core_ns.each{|k,v| repl_env.set(k,v)}
+REP = ->(str) {EVAL(READ(str), repl_env)}
+$logger.debug("$repl_env.data #=> #{repl_env.data}")
 
 while line = Readline.readline('user> ')
-  puts REP(line)
+  begin
+    puts REP[line]
+  rescue => e
+    puts e
+  end
 end
 
