@@ -26,5 +26,7 @@ $core_ns = {
     atom?: ->(a) {Atom === a},
     deref: ->(a) {a.val},
     reset!: ->(a, b) {a.val = b},
-    swap!: ->(*a) {a[0].val = a[1][*[a[0].val].concat(a.drop(2))]}
+    swap!: ->(*a) {a[0].val = a[1][*[a[0].val].concat(a.drop(2))]},
+    cons: ->(a, b) {List.new b.dup.unshift(a)},
+    concat: ->(*a) {List.new a.flatten},
 }
