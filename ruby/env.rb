@@ -2,7 +2,14 @@ class Env
   attr_accessor :data
   def initialize(outer=nil, binds=[], exprs=[])
     @outer = outer
-    @data = [binds, exprs].transpose.to_h
+    @data = {}
+    binds.each_index do |i|
+      if binds[i] == :&
+        set(binds[i+1], exprs.drop(i))
+        break
+      end
+      set(binds[i], exprs[i])
+    end
   end
 
   def set(key, value)

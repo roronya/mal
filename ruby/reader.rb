@@ -95,8 +95,10 @@ def read_atom(rdr)
   case token
     when /^-?\d+$/ then
       token.to_i
-    when /^"[^"]*"$/
-      token.to_s
+    when /^".*"$/
+      token[1..-2].gsub(/\\./, {"\\\\" => "\\", "\\n" => "\n", "\\\"" => '"'})
+    when /^:/ then
+      "\u029e#{token[1..-1]}"
     when 'nil' then
       nil
     when 'true' then
