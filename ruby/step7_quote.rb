@@ -8,7 +8,7 @@ $logger = Logger.new(STDOUT)
 $logger.level = Logger::INFO
 
 def pair?(list)
-  return List === list && list.size > 0
+  return (List === list || Vector === list) && list.size > 0
 end
 
 def quasiquote(ast)
@@ -68,6 +68,7 @@ def EVAL(ast, env)
         # quosiquoteの中ではunquoteが使えて、unquoteの引数に渡されたquoteされた部分はEVALされて、
         # quosiquote自信の引数はもう一度quoteされるっぽい。
         ast = quasiquote(a1)
+        $logger.debug("EVAL:ast:after_quosiquote_function #=> #{ast}")
       else
         el = eval_ast(ast, env)
         $logger.debug("EVAL:el #=> #{el}")
