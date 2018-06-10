@@ -14,6 +14,8 @@ class Env
 
   def set(key, value)
     @data[key] = value
+    $logger.debug("env:Env:@data.keys:in_set_method #=> #{@data.keys}")
+    return value
   end
 
   def find(key)
@@ -29,6 +31,7 @@ class Env
   def get(key)
     env = find(key)
     raise "'#{key.to_s}' not found" unless env
+    $logger.debug("env:Env:env.data[key]:in_get_method #=> #{env.data[key]}")
     return env.data[key]
   end
 end
