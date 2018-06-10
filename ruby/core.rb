@@ -29,4 +29,7 @@ $core_ns = {
     swap!: ->(*a) {a[0].val = a[1][*[a[0].val].concat(a.drop(2))]},
     cons: ->(a, b) {List.new b.dup.unshift(a)},
     concat: ->(*a) {List.new a.flatten},
+    nth: ->(l, i) {if l[i] then return l[i] else raise 'out of range' end},
+    first: ->(l) {if l and !l.empty? then l[0] else nil end},
+    rest: ->(l) {if l then List.new(l.drop(1)) else List.new end}
 }

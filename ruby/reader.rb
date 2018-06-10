@@ -23,11 +23,10 @@ end
 
 def read_str(str)
   tokens = tokenizer(str)
+  $logger.debug("reader:read_str:tokens #=> #{tokens}")
   return nil if tokens.size == 1
-  $logger.debug("read_str:tokens #=> #{tokens}")
   rdr = Reader.new(tokens)
   ast = read_form(rdr)
-  $logger.debug("read_str:ast #=> #{ast}")
   return ast
 end
 
@@ -68,8 +67,6 @@ def read_form(rdr)
              List.new [:deref, a]
            else
              atom = read_atom(rdr)
-             $logger.debug("read_form:atom #=> #{atom}")
-             $logger.debug("read_form:atom.class #=> #{atom.class}")
              atom
          end
 end
@@ -92,7 +89,6 @@ end
 
 def read_atom(rdr)
   token = rdr.next
-  $logger.debug("read_atom:token #=> #{token}")
   case token
     when /^-?\d+$/ then
       token.to_i

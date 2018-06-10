@@ -5,12 +5,13 @@ class Vector < Array
 end
 
 class Function < Proc
-  attr_accessor :ast, :params, :env
-  def initialize(ast, params, env, &block)
+  attr_accessor :ast, :params, :env, :is_macro
+  def initialize(ast, params, env, is_macro=false, &block)
     super()
     @ast = ast
     @params = params
     @env = env
+    @is_macro = is_macro
   end
 
   def get_env(args)
